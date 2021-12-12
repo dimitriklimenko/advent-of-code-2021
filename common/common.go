@@ -35,3 +35,18 @@ func ParseInts(filePath *string) []int {
 	})
 	return numbers
 }
+
+func ScanStrings(scanner *bufio.Scanner, output *[]string) {
+	for scanner.Scan() {
+		token := scanner.Text()
+		*output = append(*output, token)
+	}
+}
+
+func ParseStrings(filePath *string) []string {
+	strings := []string{}
+	ParseFile(filePath, func(scanner *bufio.Scanner) {
+		ScanStrings(scanner, &strings)
+	})
+	return strings
+}
