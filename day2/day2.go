@@ -38,8 +38,28 @@ func calcFinalProduct(dirs []string, deltas []int) int {
 	return horizontalPos * depth
 }
 
+func calcFinalProductPartTwo(dirs []string, deltas []int) int {
+	aim := 0
+	horizontalPos := 0
+	depth := 0
+	for i := 0; i < len(dirs); i++ {
+		if dirs[i] == "forward" {
+			horizontalPos += deltas[i]
+			depth += aim * deltas[i]
+		} else if dirs[i] == "down" {
+			aim += deltas[i]
+		} else if dirs[i] == "up" {
+			aim -= deltas[i]
+		} else {
+			panic(fmt.Sprintf("Invalid direction: %s", dirs[i]))
+		}
+	}
+	return horizontalPos * depth
+}
+
 func main() {
 	filePath := flag.String("f", "", "file to read from")
+	hasAim := flag.Bool("aim", true, "set for aim-based navigation")
 	flag.Parse()
 
 	dirs := []string{}
@@ -48,5 +68,11 @@ func main() {
 		scanInstructions(scanner, &dirs, &deltas)
 	})
 
-	fmt.Println(calcFinalProduct(dirs, deltas))
+	var finalProduct int
+	if *hasAim {
+		finalProduct = calcFinalProductPartTwo(dirs, deltas)
+	} else {
+		finalProduct = calcFinalProduct(dirs, deltas)
+	}
+	fmt.Println(finalProduct)
 }
