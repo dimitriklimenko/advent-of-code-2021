@@ -8,8 +8,28 @@ import (
 	"strconv"
 )
 
+func readInts(scanner *bufio.Scanner) []int {
+	numbers := []int{}
+	for scanner.Scan() {
+		num, _ := strconv.Atoi(scanner.Text())
+		numbers = append(numbers, num)
+	}
+	return numbers
+}
+
+func countIncreases(depths []int, windowWidth int) int {
+	numIncreases := 0
+	for i := windowWidth; i < len(depths); i++ {
+		if depths[i] > depths[i-windowWidth] {
+			numIncreases += 1
+		}
+	}
+	return numIncreases
+}
+
 func main() {
 	filePath := flag.String("f", "", "file to read from")
+	windowWidth := flag.Int("w", 3, "width of sliding window")
 	flag.Parse()
 
 	var fileHandle *os.File = os.Stdin
@@ -21,18 +41,7 @@ func main() {
 		}
 		defer fileHandle.Close()
 	}
-	scanner := bufio.NewScanner(fileHandle)
-
-	numIncreases := 0
-
-	scanner.Scan()
-	prevDepth, _ := strconv.Atoi(scanner.Text())
-	for scanner.Scan() {
-		depth, _ := strconv.Atoi(scanner.Text())
-		if depth > prevDepth {
-			numIncreases += 1
-		}
-		prevDepth = depth
-	}
+	depths := readInts(bufio.NewScanner(fileHandle))
+	numIncreases := countIncreases(depths, *windowWidth)
 	fmt.Println(numIncreases)
 }
