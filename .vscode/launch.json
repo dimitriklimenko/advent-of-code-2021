@@ -21,6 +21,22 @@
             "args": ["-f", "test.txt"]
         },
         {
+            "name": "Run on test2.txt",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${file}",
+            "args": ["-f", "test2.txt"]
+        },
+        {
+            "name": "Run on test3.txt",
+            "type": "go",
+            "request": "launch",
+            "mode": "auto",
+            "program": "${file}",
+            "args": ["-f", "test3.txt"]
+        },
+        {
             "name": "Launch Package",
             "type": "go",
             "request": "launch",
